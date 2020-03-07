@@ -49,4 +49,9 @@ print("Creating new instance with image {} and instance type {} .........".forma
 
 #init_config+="echo '"+inp['server']['users'][0]['ssh_key']+"' >> /home/ec2-user/.ssh/authorized_keys"
 instance = client.run_instances(MinCount=1,MaxCount=1,ImageId=imgId,InstanceType=instType,BlockDeviceMappings=dev_list,UserData=init_config)
+
+ec2_status_waiter=client.get_waiter('instance_running')
+ec2_status_waiter.wait(InstanceIds=[instance['Instances'][0]['InstanceId'],])
 print("Instance created with instance id : {} and private IP {}".format(instance['Instances'][0]['InstanceId'] ,instance['Instances'][0]['PrivateIpAddress']))
+
+
